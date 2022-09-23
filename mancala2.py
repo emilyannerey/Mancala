@@ -28,9 +28,11 @@ class Mancala:
         print("the player will pick up that new pile of marbles and continue around the board. If they landed on an empty")
         print("space, however, player A's turn is over. If the player lands in their own goal, they can move again from")
         print("their side of the board. If a player has a turn, and their side of the board is completely empty, they may")
-        print("move from the other player's side of the board. The game is over when their are no marbles left in any of")
-        print("the spaces. To make a move, use the move() function with the space as a string argument.")
-        print("For example: game1._playerA.move('1').")
+        print("move from the other player's side of the board. The game is over when there are no marbles left in any of")
+        print("the spaces. Player A moves first by entering a number for the space to move. ")
+        print(" ")
+        x = input("Please enter a space: ")
+        self.move("A", x)
 
     def get_winner(self):
         """Return's winner of the game as player object"""
@@ -43,9 +45,11 @@ class Mancala:
             return
 
         if self._board_object.is_empty(space):  # makes sure player chooses a space with marbles
+            self.prompt_turn()
             return
 
         if self.wrong_player(player):
+            self.prompt_turn()
             return
 
         if self._board_object.check_side(player):  # check to see if side is empty
@@ -55,6 +59,7 @@ class Mancala:
                 pass
             else:
                 print("Please pick a starting space on your side of the board!")
+                self.prompt_turn()
                 return
 
         route = self.set_route(player)
@@ -78,6 +83,7 @@ class Mancala:
                 num_marbles -= 1
 
         if self.next_turn(player, key):
+            self.prompt_turn()
             return
 
         if self.ends_in_goal(key):
@@ -93,6 +99,20 @@ class Mancala:
                 self._playerA.update_points()
             else:
                 self._playerB.update_points()
+
+    def prompt_turn(self):
+        """Prompts user for a number to make next move"""
+        x = input("Please enter a space: ")
+        if int(x) not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]:
+            print("Please enter a valid space! ")
+            self.prompt_turn()
+        else:
+            if self._a_turn:
+                self.move("A", x)
+            else:
+                self.move("B", x)
+        return
+
 
     def set_route(self, player):
         """Sets player route data member"""
@@ -123,6 +143,7 @@ class Mancala:
             else:
                 print("You landed in your own points pile! You go again!")
                 self._first_move = True
+                self.prompt_turn()
                 return True
         else:
             return False
@@ -190,60 +211,6 @@ class Mancala:
             return True
         else:
             return False
-"""
-game1 = Mancala("Emily", "Danny")
-game1.move('A', '3')
-game1.move('A', '2')
-game1.move('B', '11')
-game1.move("A", "1")
-game1.move("B", "12")
-game1.move("B", "10")
-game1.move("B", "12")
-game1.move("B", "7")
-game1.move("A", "6")
-game1.move("A", "3")
-game1.move("A", "4")
-game1.move("A", "2")
-game1.move("A", "1")
-game1.move("A", "6")
-game1.move("A", "4")
-game1.move("A", "3")
-game1.move("A", "1")
-game1.move("B", "12")
-game1.move("B", "8")
-game1.move("A", "2")
-game1.move("B", "9")
-game1.move("A", "6")
-game1.move("A", "3")
-game1.move("A", "5")
-game1.move("B", "8")
-game1.move("B", "10")
-game1.move("A", "5")
-game1.move("B", "11")
-game1.move("B", "12")
-game1.move("A", "1")
-game1.move("A", "6")
-game1.move("A", "5")
-game1.move("A", "6")
-game1.move("A", "4")
-game1.move("B", "8")
-game1.move("A", "2")
-game1.move("B", "10")
-game1.move("B", "12")
-game1.move("B", "4")
-game1.move("A", "6")
-game1.move("B", "8")
-game1.move("A", "3")
-game1.move("B", "10")
-game1.move("B", "12")
-game1.move("B", "4")
-game1.move("A", "5")
-game1.move("B", "6")
-game1.move("A", "7")
-game1.move("B", "8")
-game1.move("A", "9")
-game1.move("B", "10")
-game1.move("A", "11")
-game1.move("B", "12")
-game1.move("B", "3")
-"""
+
+game1 = Mancala("Emily", "Tommy")
+
